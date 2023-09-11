@@ -1,0 +1,10 @@
+name: geocoding-mini-curso
+title:
+username: pedrottl-shiny
+account: pedrottl-shiny
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9770653
+bundleId: 7652537
+url: https://pedrottl-shiny.shinyapps.io/geocoding-mini-curso/
+version: 1

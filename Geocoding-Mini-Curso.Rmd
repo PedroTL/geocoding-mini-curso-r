@@ -1,0 +1,402 @@
+---
+title: "Geocoding - Mini Curso"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidygeocoder)
+library(openxlsx)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(stringr)
+library(scraEP)
+library(geobr)
+library(tmap)
+```
+
+## 1. Breve Introducao ao R
+
+### 1.1 Vetores e Varíaveis
+
+Vetores são itens de um mesmo tipo que podem ser combinados. Neste sentido temos diversas classes especificas incluem:
+
+- Numerics
+- Integers
+- Characther
+- Logical
+
+Vetores podem ser armazenados em Varíaveis, estas podem guardar valores e são criadas a partir do momento que assinamos algum valor a ela. 
+
+- Para assinar valor a varíavel utilizamos `<-`. 
+- Para visualizar o valor assinado a variavel apenas escrevemos o nome da varíavel e rodamos.
+
+```{r vector_1, exercise=TRUE}
+Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric
+
+# Vetor Integers
+Integer <- c(1, 2, 3)
+
+# Vetor Characther
+Characther <- c("Pedro", "Toledo", "Lucas")
+
+# Vetor Logical
+Logical <- c(TRUE, FALSE, TRUE)
+```
+
+Podemos confirmar em qual classe ela pertence.
+
+```{r vector_2, exercise=TRUE}
+class(Numeric)
+```
+
+#### 1.1.1 Acessando Vetores
+
+Podemos acessar valores em um vetor se referindo ao numero em que queremos o valor dentro de `[]`. Por exemplo, para o pegarmos o nome `Toledo` do vetor `Characther` utilizariamos `Characther[2]`. Isto porque este valor esta na posicao 2 deste vetor
+
+```{r vector_3, exercise=TRUE}
+Characther[2]
+```
+
+Podemos acessar multiplos valores utilizando vetores `c()`. Por exemplo, para acessar os 2 ultimos valores de `Numeric` podemos utilizar `Numeric[c(2,3)]`. Isto porque o valor que queremos esta na posicao 2 e 3.
+
+```{r vector_4, exercise=TRUE}
+Numeric_2_3 <- Numeric[c(2,3)] # Pegando apenas os valores de posicao 2 e 3 e assinando a uma nova variavel
+Numeric_2_3
+```
+
+### 1.2 Listas
+
+Uma lista é uma colecao de dados, que pode ser odernada e alterada. Uma lista suporta diversos tipos de dados.
+
+```{r list_1, exercise=TRUE}
+nomes_lista <- list("Pedro", "Toledo", "Lucas")
+altura_lista <- list(1.80, 1.76, 1.74) 
+```
+
+```{r list_2, exercise=TRUE}
+nome_altura_lista <- c(nomes_lista, altura_lista)
+nome_altura_lista
+```
+
+```{r list_3, exercise=TRUE}
+cidade_estado_bd <- data.frame("Estado" = as.character("SP", "SP", "SP"),
+                               "Cidade" = as.character("Campinas", "Atibaia", "São Paulo"))
+
+cidade_estado_bd <- list(cidade_estado_bd)
+```
+
+```{r list_4, exercise=TRUE}
+lista_final <- c(cidade_estado_bd, nomes_lista)
+```
+
+### 1.2.1 Acessando Valores de uma Lista
+
+Podemos acessar valores nas listas nos referindo ao numero `index` dentro da lista. O primeiro `index` tem valor 1, o segundo 2, e assim por diante.
+
+```{r list_5, exercise=TRUE}
+# Acessando e Extraindo Banco de Dados dentro da Lista
+cidade_estado_bd_2 <- lista_final[[1]]
+cidade_estado_bd_2
+```
+
+```{r list_6, exercise=TRUE}
+# Acessando e Extrando Nome dentro da Lista
+nome_pedro <- lista_final[[2]]
+nome_pedro
+```
+
+### 1.3 Funcoes e Pacotes
+
+Funcoes
+
+Uma função em R é um objeto que contém múltiplas instruções inter-relacionadas que são executadas juntas em uma ordem predefinida sempre que a função é chamada. As funções em R podem ser integradas ou criadas pelo usuário.
+
+Cada funcao apresenta argumentos, são valores permitidos a serem colocados em cada funcao.
+
+A funcao min() apresenta os seguintes argumentos
+
+
+- `...`	numeric ou character argumentos (Ver Notas).
+
+- `na.rm`	indicador logico (`TRUE` ou `FALSE`) se valores missing deve ser removido
+
+```{r func-pacotes_1, exercise=TRUE, exercise.setup="vector_1"}
+# Descobrindo valor minimo
+min(Numeric)
+
+# Argumentos
+min(c(1, NA, 10))
+
+min(c(1, NA, 10), na.rm = TRUE)
+```
+
+Pacotes
+
+Os pacotes R são extensões da linguagem de programação estatística R. Os pacotes R contêm código, dados, funcoes e documentação em um formato de coleção padronizado que pode ser instalado por usuários de R.
+
+Os pacotes são facilitadores, por meio de funcoes que servem para um proposito. Por exemplo o pacote `dplyr` traz diversos facilitadores para manipulacao de dados. 
+
+```{r func-pacotes_2, exercise=TRUE}
+bd <- data.frame(Valor = c(12, 10, 20),
+                 Nome = c("Pedro", "Toledo", "Lucas"))
+
+dplyr::filter(bd, Valor >= 12)
+dplyr::filter(bd, Nome == "Pedro")
+dplyr::select(bd, Valor)
+```
+
+## 2. Estrutura do Endereco para Geocoding
+
+Falar estrutura, quanto + informacao melhor ...
+
+## 3. Banco de Dados
+
+Bancos de Dados podem ter diferentes tipos de dados, espalhados em colunas. Por exemplo, podemos ter uma Coluna de Endereco, como caracther e uma segunda coluna Integer, indicando Numero da Casa ou CEP.
+
+Em Bancos de Dados podemos manipular as colunas, transformando-as e aplicando funcoes. É possível criar novas colunas que sumarizem um resultado. 
+
+Alguns Exemplos seriam:
+
+- Multiplicar 2 colunas numericas e obter o resultado em uma terceira coluna.
+- Remover todos os acentos de uma coluna de Endereco (Characther)
+- Deixar o texto em letra maiuscula em coluna de Endereco (Characther)
+- Substituir ou remover um certo padrão de texto em coluna de Endereco (Characther)
+
+```{r bd_1, exercise=TRUE}
+# Abrindo Banco de Dados
+enderecos <- read.xlsx("https://github.com/PedroTL/geocoding-mini-curso-r/raw/main/Bancos%20de%20Dados/Enderecos-Mini-Curso.xlsx")
+
+# Visualizando primeiras observacoes
+head(enderecos)
+```
+
+### 3.1 Acessando Valores no Banco de Dados
+
+Cada Banco de Dados apresenta uma estrutura, no R entendemos que temos `Colunas` e `Observacoes (Linhas)`
+
+Podemos selecionar acessar valores em um banco de dados com a seguinte sintaxe:
+
+- `enderecos[1, 2]` = O valor antes da virgula dentro do `[]` é considerado a posicao da `Observacao (Linhas)` e o valor depois da virgula é a posicao da `Coluna`. Neste caso estamos selecionando a observacao 1 da coluna 2
+- `enderecos[1:4, 1]` = Podemos selecionar uma sequencia de linhas, neste caso temos da linha 1 até a 4
+- `enderecos$cep` = Podemos acessar colunas com o simbolo `$` seguido do nome da coluna
+
+```{r bd_2, exercise=TRUE, exercise.setup="bd_1"}
+# Selecionando 3 Observacao da 2 Coluna
+endereco_1 <- enderecos[3, 2]
+
+# Selecionando 3 até 10 Observacoes da 1 Coluna
+enderecos_2 <- enderecos[3:10, 1]
+
+# Selecionando apenas a coluna de endereco
+enderecos_3 <- enderecos$endereco
+```
+
+### 3.2 Realizando Transformacoes
+
+Com Banco de Dados muitas das vezes iremos trabalhar os dados antes de utiliza-los. Para tanto, podemos realizar transformacoes nas colunas já existentes, criar novas colunas ou sumarizar em um novo Banco de Dados novas informacoes. 
+
+Aqui iremos realizar as seguintes transformacoes para pesquisa dos enderecos no georreferenciamento:
+
+- Criar 2 colunas contendo o nome do `municipio`, `estado` e `pais`
+- Unir em uma unica coluna de `endereco_completo` as informacoes de `endereco` `municipio` `estado` `cep` e `pais`
+- Transformar a coluna de `endereco_completo`:
+      + Deixar todo texto em letra maiuscula
+      + Remover pontuacoes e espacos duplos
+
+```{r bd_3, exercise=TRUE, exercise.setup="bd_1"}
+# Criando 2 novas Colunas
+endereco_final <- enderecos[15:45, ] %>%
+  mutate(municipio = "Campinas",
+         estado = "SP",
+         pais = "Brasil")
+
+head(endereco_final)
+```
+
+```{r bd_4, exercise=TRUE, exercise.setup="bd_3"}
+# Unindo Informacoes em endereco_completo
+endereco_final <- endereco_final %>%
+  mutate(endereco_completo = paste(endereco,
+                                municipio,
+                                estado,
+                                cep,
+                                pais, sep = " "))
+
+head(endereco_final)
+```
+
+```{r bd_5, exercise=TRUE, exercise.setup="bd_4"}
+# Transformando coluna de endereco_completo
+endereco_final <- endereco_final %>%
+  mutate(endereco_completo = str_squish(endereco_completo),
+         endereco_completo = unaccent(endereco_completo),
+         endereco_completo = str_replace_all(endereco_completo, "[[:punct:]]", ""),
+         endereco_completo = toupper(endereco_completo))
+
+head(endereco_final$endereco_completo)
+```
+
+## 4. Realizando Geocoding dos enderecos
+
+Geocoding é o processo de conversão de endereços em coordenadas geograficas. A utilizacao varia, podendo ser útil em estudos academicos, análise de mercado, dentre outros.
+
+O objetivo é conseguir a localizacao dos enderecos trabalhados no tópico 3.
+
+Utilizaremos o pacote `tidygeocoder`, ele unifica a padroniza os metodos de pesquisa de pontos geográficos dado o fornecimento de enderecos.
+
+### 4.1 APIs e Servicos de Geolocalizacao
+
+Os servicos de Geolocalizacao são diversos, disponibilizados por empresas que detem bases de dados geográficos. Sendo as mais famosas:
+
+- Google          (Pago)
+- Bing            (Gratuito até 125 mil requerimentos)
+- Arcgis          (Gratuito)
+- Open Street Map (Gratuito)
+- Outros..
+
+Cada servico tem uma `API` que significa `Application Programming Interface (Interface de Programação de Aplicação`. Neste caso fornecemos para o servico uma endereco e recebemos um `retorno` que inclui `Latitude` e `Longitude`, expressando a localizacao de determinado endereco.
+
+Para realizar tais requerimentos é necessário uma `chave de API`, exclusiva para cada servico, algumas destas chaves podem ser adquiridas de maneira gratuita, contudo, algumas podem ser pagas.
+
+O pacote `tidygeocoder` unificou de modo padronizado diversos servicos de Geocoding. Para informacao completa de todos os servicos disponiveis utilize `?tidygeocoder` para ler a documentacao.
+
+Neste caso vamos utilizar a `API` do Arcgis para realizar o Geocoding.
+
+### 4.1.1 Geocoding
+
+O `tidygeocoder` possuí 4 funcoes chaves para o Geocoding:
+
+- `geo()` É utilizada normalmente para pesquisar endereco `Unico` em um `Unico` servico de geolocalizacao, também aceita diversos enderecos por meio de vetores `c()`
+- `geocode()` É utilizada para pesquisar enderecos `Diversos` em um `Unico` servico de geolocalizacao, podemos utilizar a `coluna` de endereco em um banco de dados
+- `geocode_combine()` É utilizado para pesquisar enderecos `Diversos` em `Diversos` servicos de geolocalizacao, podemos utilizar a `coluna` de enderecos em um banco de dados e receber retornos de diversos servicos de Geocoding 
+
+### 4.1.2 Pesquisa unica de endereco
+
+```{r geo_1, exercise=TRUE}
+geo("Cidade Universitaria Zeferino Vaz - Barao Geraldo, Campinas - SP, 13083-970", method = "arcgis")
+```
+
+```{r geo_2, exercise=TRUE}
+geo("Cidade Universitaria Zeferino Vaz - Barao Geraldo, Campinas - SP, 13083-970", method = "arcgis", full_results = TRUE)
+```
+
+### 4.1.3 Pesquisa de diversos enderecos
+
+```{r geo_3, exercise=TRUE, exercise.setup="bd_5"}
+endereco_final_geocode_1 <- geocode(endereco_final, 
+                                    address = endereco_completo,
+                                    method = "arcgis",
+                                    #full_results = TRUE
+                                    )
+head(endereco_final_geocode_1)
+```
+
+### 4.2.3 Pesquisa de diversos enderecos em diversos APIs
+
+```{r geo_4, exercise=TRUE, exercise.setup="bd_5"}
+response <- geocode_combine(endereco_final,
+                            queries = list(
+                              list(address = 'endereco_completo', method = 'arcgis', mode = 'single', full_results = TRUE),
+                              list(address = 'endereco_completo', method = 'osm', mode = 'single', full_results = TRUE)),
+                            cascade = FALSE,
+                            return_list = TRUE)
+
+summary(response)
+
+# Extraindo Bancos de Dados
+endereco_final_arcgis <- response[[1]]
+endereco_final_osm <- response[[2]]
+```
+
+
+## 5. Introducao a cartografia (Segundo dia) (William)
+
+### 5.1 Poligonos, Pontos ... (William)
+
+### 5.2 Elementos essenciais em uma mapa ... (William)
+
+## 6. Criando Mapas em R
+
+Um aspecto satisfatório e importante da pesquisa geográfica é a comunicação dos resultados. A confecção de mapas – a arte da cartografia – é uma habilidade antiga que envolve comunicação, intuição e um elemento de criatividade.
+
+### 6.1 Mapas Estaticos
+
+Os mapas estáticos são o tipo mais comum de saída visual da geocomputação. Os formatos padrão incluem .png e .pdf.
+
+Esta seção concentra-se no tmap e enfatiza as importantes opções estéticas e de layout.
+
+tmap é um pacote de criação de mapas poderoso e flexível com padrões razoáveis. Possui uma sintaxe concisa que permite a criação de mapas atrativos com o mínimo de código
+
+
+### 6.1.1 Abrindo mapa que sera utilizado para plotar os pontos geocodificados e Transformando Latitude e Longitude em um objeto espacial
+
+```{r map_0, exercise=TRUE, exercise.setup="geo_3"}
+# Carregando Mapa de Campinas
+campinas_mapa <- read_sf("/vsicurl/https://github.com/PedroTL/geocoding-mini-curso-r/raw/main/ShapeFile/062c914d-a300-f729-3a06-000010a29969.shp")
+
+# Transformando LAT e LON em objeto espacial
+endereco_sf <- st_as_sf(endereco_final_geocode_1, coords = c("long", "lat"), na.fail = FALSE, crs = "EPSG:4674")
+
+campinas_mapa <- st_transform(campinas_mapa, crs = st_crs(endereco_sf))
+
+# Selecionando apenas colunas de interesse
+endereco_sf <- endereco_sf %>%
+  select(endereco_completo, geometry)
+
+head(endereco_sf)
+```
+
+Primeira visualizacao
+
+```{r map_3, exercise=TRUE, exercise.setup="map_0"}
+# Criando Mapa Base 
+mapa_base <- tm_shape(campinas_mapa) +
+  tm_fill("lightblue") +
+  tm_borders() +
+  tm_polygons("APG", legend.show = F, lwd = 0.02, alpha=0.2) +
+  tm_text("APG", size = 1/2, auto.placement = FALSE) #+
+  #tm_layout(frame = FALSE)
+
+# Visualizando Mapa Base
+mapa_base
+
+# Adicionando Pontos no Mapa Base
+mapa_base_pontos <- mapa_base +
+  tm_shape(endereco_sf) +
+  tm_dots(size = 0.1, col = "red") 
+
+# Visualizando Mapa Base com os Pontos
+mapa_base_pontos
+
+# Adicionando Elementos Finais
+mapa_base_pontos_elementos <- mapa_base_pontos +
+  tm_scale_bar(position = c(0.001, 0.0001), width = 0.13) +
+  tm_compass(position = c("left", "top"), size = 1) +
+  tm_layout(main.title = "Mapa de pontos - Georreferenciamento", main.title.size = 1.4) +
+  tm_grid(projection = "EPSG:4674", alpha = 0.2) +
+  tm_credits("Fonte: Fabricacao propria com base nos dados do Correio", fontface = "italic", align = "right", position = c(0.08, 0.0001)) 
+
+# Visualizando com os Elementos Finais
+mapa_base_pontos_elementos
+
+# Abrindo Mapa dos Municipios de São Paulo
+sao_paulo <- read_municipality(code_muni= "SP", year=2020) %>%
+  select(code_muni, geometry = geom) %>%
+  mutate(campinas = ifelse(code_muni == 3509502, 1, NA))
+
+# criando Filtro para Campians
+sao_paulo_mini <- tm_shape(sao_paulo) +
+  tm_fill("campinas", legend.show = F, palette = "red")
+
+
+# Adicionando Mapa de São Paulo na visualizacao do Mapa
+print(sao_paulo_mini, vp = grid::viewport(0.8, 0.25, width = 0.2, height = 0.45))
+```
+
+
+### 6.2 Criando Mapa de Calor via Qgis (William)
+
+## 7. Conclusão
