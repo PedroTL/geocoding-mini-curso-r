@@ -4,9 +4,7 @@ username: pedrottl-shiny
 account: pedrottl-shiny
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 9880470
-bundleId: 7690313
+appId: 9883845
+bundleId: 7690554
 url: https://pedrottl-shiny.shinyapps.io/shiny_geo/
 version: 1
-asMultiple: FALSE
-asStatic: FALSE

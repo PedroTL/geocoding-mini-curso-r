@@ -43,15 +43,19 @@ Vetores podem ser armazenados em Varíaveis, estas podem guardar valores e são 
 
 ```{r vector_1, exercise=TRUE}
 Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric
+Numeric
 
 # Vetor Integers
 Integer <- c(1, 2, 3)
+Integer
 
 # Vetor Characther
 Characther <- c("Pedro", "Toledo", "Lucas")
+Characther
 
 # Vetor Logical
 Logical <- c(TRUE, FALSE, TRUE)
+Logical
 ```
 
 Podemos confirmar em qual classe ela pertence.
@@ -96,6 +100,7 @@ cidade_estado_bd <- data.frame("Estado" = as.character("SP", "SP", "SP"),
 cidade_estado_bd <- list(cidade_estado_bd)
 
 lista_final <- c(cidade_estado_bd, nomes_lista)
+summary(lista_final)
 ```
 
 #### 2.2.1 Acessando Valores de uma Lista
@@ -188,12 +193,15 @@ Podemos selecionar acessar valores em um banco de dados com a seguinte sintaxe:
 ```{r bd_2, exercise=TRUE, exercise.setup="bd_1"}
 # Selecionando 3 Observacao da 2 Coluna
 endereco_1 <- enderecos[3, 2]
+endereco_1
 
 # Selecionando 3 até 10 Observacoes da 1 Coluna
 enderecos_2 <- enderecos[3:10, 1]
+enderecos_2
 
 # Selecionando apenas a coluna de endereco
 enderecos_3 <- enderecos$endereco
+head(enderecos_3)
 ```
 
 ### 3.2 Realizando Transformacoes
@@ -278,7 +286,9 @@ head(endereco_final_geocode_1)
 ### 4.2.3 Pesquisa de diversos enderecos em diversos APIs
 
 ```{r geo_4, exercise=TRUE, exercise.setup="bd_5"}
-response <- geocode_combine(endereco_final,
+endereco_final_combine <- endereco_final[0:3, ]
+
+response <- geocode_combine(endereco_final_combine,
                             queries = list(
                               list(address = 'endereco_completo', method = 'arcgis', mode = 'single', full_results = TRUE),
                               list(address = 'endereco_completo', method = 'osm', mode = 'single', full_results = TRUE)),
@@ -290,6 +300,9 @@ summary(response)
 # Extraindo Bancos de Dados
 endereco_final_arcgis <- response[[1]]
 endereco_final_osm <- response[[2]]
+
+head(endereco_final_arcgis)
+head(endereco_final_osm)
 ```
 
 ## 5. Elementos essenciais em uma mapa 

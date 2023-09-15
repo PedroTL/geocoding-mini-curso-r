@@ -153,15 +153,19 @@ da varíavel e rodamos.</li>
 <div class="tutorial-exercise" data-label="vector_1" data-completion="1"
 data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>Numeric &lt;- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric
+Numeric
 
 # Vetor Integers
 Integer &lt;- c(1, 2, 3)
+Integer
 
 # Vetor Characther
 Characther &lt;- c(&quot;Pedro&quot;, &quot;Toledo&quot;, &quot;Lucas&quot;)
+Characther
 
 # Vetor Logical
-Logical &lt;- c(TRUE, FALSE, TRUE)</code></pre>
+Logical &lt;- c(TRUE, FALSE, TRUE)
+Logical</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
 <p>Podemos confirmar em qual classe ela pertence.</p>
@@ -217,7 +221,8 @@ data-diagnostics="1" data-startover="1" data-lines="0">
 
 cidade_estado_bd &lt;- list(cidade_estado_bd)
 
-lista_final &lt;- c(cidade_estado_bd, nomes_lista)</code></pre>
+lista_final &lt;- c(cidade_estado_bd, nomes_lista)
+summary(lista_final)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
 <div id="section-acessando-valores-de-uma-lista" class="section level4">
@@ -338,12 +343,15 @@ linhas, neste caso temos da linha 1 até a 4</li>
 data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code># Selecionando 3 Observacao da 2 Coluna
 endereco_1 &lt;- enderecos[3, 2]
+endereco_1
 
 # Selecionando 3 até 10 Observacoes da 1 Coluna
 enderecos_2 &lt;- enderecos[3:10, 1]
+enderecos_2
 
 # Selecionando apenas a coluna de endereco
-enderecos_3 &lt;- enderecos$endereco</code></pre>
+enderecos_3 &lt;- enderecos$endereco
+enderecos_3</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
 </div>
@@ -470,7 +478,9 @@ class="section level3">
 <h3>4.2.3 Pesquisa de diversos enderecos em diversos APIs</h3>
 <div class="tutorial-exercise" data-label="geo_4" data-completion="1"
 data-diagnostics="1" data-startover="1" data-lines="0">
-<pre class="text"><code>response &lt;- geocode_combine(endereco_final,
+<pre class="text"><code>endereco_final_combine &lt;- endereco_final[0:3, ]
+
+response &lt;- geocode_combine(endereco_final_combine,
                             queries = list(
                               list(address = &#39;endereco_completo&#39;, method = &#39;arcgis&#39;, mode = &#39;single&#39;, full_results = TRUE),
                               list(address = &#39;endereco_completo&#39;, method = &#39;osm&#39;, mode = &#39;single&#39;, full_results = TRUE)),
@@ -481,7 +491,10 @@ summary(response)
 
 # Extraindo Bancos de Dados
 endereco_final_arcgis &lt;- response[[1]]
-endereco_final_osm &lt;- response[[2]]</code></pre>
+endereco_final_osm &lt;- response[[2]]
+
+head(endereco_final_arcgis)
+head(endereco_final_osm)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
 </div>
@@ -649,7 +662,7 @@ learnr:::store_exercise_cache(structure(list(label = "vector_1", global_setup = 
 "library(ggplot2)", "library(sf)", "library(stringr)", "library(scraEP)", 
 "library(geobr)", "library(tmap)"), chunk_opts = list(label = "setup", 
     include = FALSE)), setup = NULL, chunks = list(list(label = "vector_1", 
-    code = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)", 
+    code = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\nNumeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\nInteger\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\nCharacther\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)\nLogical", 
     opts = list(label = "\"vector_1\"", exercise = "TRUE"), engine = "r")), 
     code_check = NULL, error_check = NULL, check = NULL, solution = NULL, 
     tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
@@ -670,11 +683,12 @@ learnr:::store_exercise_cache(structure(list(label = "vector_1", global_setup = 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, label = "vector_1", exercise = TRUE, 
         code = c("Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric", 
-        "", "# Vetor Integers", "Integer <- c(1, 2, 3)", "", 
-        "# Vetor Characther", "Characther <- c(\"Pedro\", \"Toledo\", \"Lucas\")", 
-        "", "# Vetor Logical", "Logical <- c(TRUE, FALSE, TRUE)"
-        ), out.width.px = 624, out.height.px = 384, params.src = "vector_1, exercise=TRUE", 
-        fig.num = 0, exercise.df_print = "paged", exercise.checker = "NULL"), 
+        "Numeric", "", "# Vetor Integers", "Integer <- c(1, 2, 3)", 
+        "Integer", "", "# Vetor Characther", "Characther <- c(\"Pedro\", \"Toledo\", \"Lucas\")", 
+        "Characther", "", "# Vetor Logical", "Logical <- c(TRUE, FALSE, TRUE)", 
+        "Logical"), out.width.px = 624, out.height.px = 384, 
+        params.src = "vector_1, exercise=TRUE", fig.num = 0, 
+        exercise.df_print = "paged", exercise.checker = "NULL"), 
     engine = "r", version = "4"), class = c("r", "tutorial_exercise"
 )))
 </script>
@@ -692,8 +706,8 @@ learnr:::store_exercise_cache(structure(list(label = "vector_2", global_setup = 
 "library(tidygeocoder)", "library(openxlsx)", "library(dplyr)", 
 "library(ggplot2)", "library(sf)", "library(stringr)", "library(scraEP)", 
 "library(geobr)", "library(tmap)"), chunk_opts = list(label = "setup", 
-    include = FALSE)), setup = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)", 
-    chunks = list(list(label = "vector_1", code = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)", 
+    include = FALSE)), setup = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\nNumeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\nInteger\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\nCharacther\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)\nLogical", 
+    chunks = list(list(label = "vector_1", code = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\nNumeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\nInteger\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\nCharacther\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)\nLogical", 
         opts = list(label = "\"vector_1\"", exercise = "TRUE"), 
         engine = "r"), list(label = "vector_2", code = "class(Numeric)", 
         opts = list(label = "\"vector_2\"", exercise = "TRUE", 
@@ -736,8 +750,8 @@ learnr:::store_exercise_cache(structure(list(label = "vector_3", global_setup = 
 "library(tidygeocoder)", "library(openxlsx)", "library(dplyr)", 
 "library(ggplot2)", "library(sf)", "library(stringr)", "library(scraEP)", 
 "library(geobr)", "library(tmap)"), chunk_opts = list(label = "setup", 
-    include = FALSE)), setup = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)", 
-    chunks = list(list(label = "vector_1", code = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)", 
+    include = FALSE)), setup = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\nNumeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\nInteger\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\nCharacther\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)\nLogical", 
+    chunks = list(list(label = "vector_1", code = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\nNumeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\nInteger\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\nCharacther\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)\nLogical", 
         opts = list(label = "\"vector_1\"", exercise = "TRUE"), 
         engine = "r"), list(label = "vector_3", code = "Characther[2]", 
         opts = list(label = "\"vector_3\"", exercise = "TRUE", 
@@ -780,8 +794,8 @@ learnr:::store_exercise_cache(structure(list(label = "vector_4", global_setup = 
 "library(tidygeocoder)", "library(openxlsx)", "library(dplyr)", 
 "library(ggplot2)", "library(sf)", "library(stringr)", "library(scraEP)", 
 "library(geobr)", "library(tmap)"), chunk_opts = list(label = "setup", 
-    include = FALSE)), setup = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)", 
-    chunks = list(list(label = "vector_1", code = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)", 
+    include = FALSE)), setup = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\nNumeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\nInteger\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\nCharacther\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)\nLogical", 
+    chunks = list(list(label = "vector_1", code = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\nNumeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\nInteger\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\nCharacther\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)\nLogical", 
         opts = list(label = "\"vector_1\"", exercise = "TRUE"), 
         engine = "r"), list(label = "vector_4", code = "Numeric_2_3 <- Numeric[c(2,3)] # Pegando apenas os valores de posicao 2 e 3 e assinando a uma nova variavel\nNumeric_2_3", 
         opts = list(label = "\"vector_4\"", exercise = "TRUE", 
@@ -915,7 +929,7 @@ learnr:::store_exercise_cache(structure(list(label = "list_3", global_setup = st
     include = FALSE)), setup = "nomes_lista <- list(\"Pedro\", \"Toledo\", \"Lucas\")\naltura_lista <- list(1.80, 1.76, 1.74) ", 
     chunks = list(list(label = "list_1", code = "nomes_lista <- list(\"Pedro\", \"Toledo\", \"Lucas\")\naltura_lista <- list(1.80, 1.76, 1.74) ", 
         opts = list(label = "\"list_1\"", exercise = "TRUE"), 
-        engine = "r"), list(label = "list_3", code = "cidade_estado_bd <- data.frame(\"Estado\" = as.character(\"SP\", \"SP\", \"SP\"),\n                               \"Cidade\" = as.character(\"Campinas\", \"Atibaia\", \"São Paulo\"))\n\ncidade_estado_bd <- list(cidade_estado_bd)\n\nlista_final <- c(cidade_estado_bd, nomes_lista)", 
+        engine = "r"), list(label = "list_3", code = "cidade_estado_bd <- data.frame(\"Estado\" = as.character(\"SP\", \"SP\", \"SP\"),\n                               \"Cidade\" = as.character(\"Campinas\", \"Atibaia\", \"São Paulo\"))\n\ncidade_estado_bd <- list(cidade_estado_bd)\n\nlista_final <- c(cidade_estado_bd, nomes_lista)\nsummary(lista_final)", 
         opts = list(label = "\"list_3\"", exercise = "TRUE", 
             exercise.setup = "\"list_1\""), engine = "r")), code_check = NULL, 
     error_check = NULL, check = NULL, solution = NULL, tests = NULL, 
@@ -939,8 +953,8 @@ learnr:::store_exercise_cache(structure(list(label = "list_3", global_setup = st
         exercise.setup = "list_1", code = c("cidade_estado_bd <- data.frame(\"Estado\" = as.character(\"SP\", \"SP\", \"SP\"),", 
         "                               \"Cidade\" = as.character(\"Campinas\", \"Atibaia\", \"São Paulo\"))", 
         "", "cidade_estado_bd <- list(cidade_estado_bd)", "", 
-        "lista_final <- c(cidade_estado_bd, nomes_lista)"), out.width.px = 624, 
-        out.height.px = 384, params.src = "list_3, exercise=TRUE, exercise.setup=\"list_1\"", 
+        "lista_final <- c(cidade_estado_bd, nomes_lista)", "summary(lista_final)"
+        ), out.width.px = 624, out.height.px = 384, params.src = "list_3, exercise=TRUE, exercise.setup=\"list_1\"", 
         fig.num = 0, exercise.df_print = "paged", exercise.checker = "NULL"), 
     engine = "r", version = "4"), class = c("r", "tutorial_exercise"
 )))
@@ -959,10 +973,10 @@ learnr:::store_exercise_cache(structure(list(label = "list_5", global_setup = st
 "library(tidygeocoder)", "library(openxlsx)", "library(dplyr)", 
 "library(ggplot2)", "library(sf)", "library(stringr)", "library(scraEP)", 
 "library(geobr)", "library(tmap)"), chunk_opts = list(label = "setup", 
-    include = FALSE)), setup = "nomes_lista <- list(\"Pedro\", \"Toledo\", \"Lucas\")\naltura_lista <- list(1.80, 1.76, 1.74) \ncidade_estado_bd <- data.frame(\"Estado\" = as.character(\"SP\", \"SP\", \"SP\"),\n                               \"Cidade\" = as.character(\"Campinas\", \"Atibaia\", \"São Paulo\"))\n\ncidade_estado_bd <- list(cidade_estado_bd)\n\nlista_final <- c(cidade_estado_bd, nomes_lista)", 
+    include = FALSE)), setup = "nomes_lista <- list(\"Pedro\", \"Toledo\", \"Lucas\")\naltura_lista <- list(1.80, 1.76, 1.74) \ncidade_estado_bd <- data.frame(\"Estado\" = as.character(\"SP\", \"SP\", \"SP\"),\n                               \"Cidade\" = as.character(\"Campinas\", \"Atibaia\", \"São Paulo\"))\n\ncidade_estado_bd <- list(cidade_estado_bd)\n\nlista_final <- c(cidade_estado_bd, nomes_lista)\nsummary(lista_final)", 
     chunks = list(list(label = "list_1", code = "nomes_lista <- list(\"Pedro\", \"Toledo\", \"Lucas\")\naltura_lista <- list(1.80, 1.76, 1.74) ", 
         opts = list(label = "\"list_1\"", exercise = "TRUE"), 
-        engine = "r"), list(label = "list_3", code = "cidade_estado_bd <- data.frame(\"Estado\" = as.character(\"SP\", \"SP\", \"SP\"),\n                               \"Cidade\" = as.character(\"Campinas\", \"Atibaia\", \"São Paulo\"))\n\ncidade_estado_bd <- list(cidade_estado_bd)\n\nlista_final <- c(cidade_estado_bd, nomes_lista)", 
+        engine = "r"), list(label = "list_3", code = "cidade_estado_bd <- data.frame(\"Estado\" = as.character(\"SP\", \"SP\", \"SP\"),\n                               \"Cidade\" = as.character(\"Campinas\", \"Atibaia\", \"São Paulo\"))\n\ncidade_estado_bd <- list(cidade_estado_bd)\n\nlista_final <- c(cidade_estado_bd, nomes_lista)\nsummary(lista_final)", 
         opts = list(label = "\"list_3\"", exercise = "TRUE", 
             exercise.setup = "\"list_1\""), engine = "r"), list(
         label = "list_5", code = "# Acessando e Extraindo Banco de Dados dentro da Lista\ncidade_estado_bd_2 <- lista_final[[1]]\ncidade_estado_bd_2", 
@@ -1007,10 +1021,10 @@ learnr:::store_exercise_cache(structure(list(label = "list_6", global_setup = st
 "library(tidygeocoder)", "library(openxlsx)", "library(dplyr)", 
 "library(ggplot2)", "library(sf)", "library(stringr)", "library(scraEP)", 
 "library(geobr)", "library(tmap)"), chunk_opts = list(label = "setup", 
-    include = FALSE)), setup = "nomes_lista <- list(\"Pedro\", \"Toledo\", \"Lucas\")\naltura_lista <- list(1.80, 1.76, 1.74) \ncidade_estado_bd <- data.frame(\"Estado\" = as.character(\"SP\", \"SP\", \"SP\"),\n                               \"Cidade\" = as.character(\"Campinas\", \"Atibaia\", \"São Paulo\"))\n\ncidade_estado_bd <- list(cidade_estado_bd)\n\nlista_final <- c(cidade_estado_bd, nomes_lista)", 
+    include = FALSE)), setup = "nomes_lista <- list(\"Pedro\", \"Toledo\", \"Lucas\")\naltura_lista <- list(1.80, 1.76, 1.74) \ncidade_estado_bd <- data.frame(\"Estado\" = as.character(\"SP\", \"SP\", \"SP\"),\n                               \"Cidade\" = as.character(\"Campinas\", \"Atibaia\", \"São Paulo\"))\n\ncidade_estado_bd <- list(cidade_estado_bd)\n\nlista_final <- c(cidade_estado_bd, nomes_lista)\nsummary(lista_final)", 
     chunks = list(list(label = "list_1", code = "nomes_lista <- list(\"Pedro\", \"Toledo\", \"Lucas\")\naltura_lista <- list(1.80, 1.76, 1.74) ", 
         opts = list(label = "\"list_1\"", exercise = "TRUE"), 
-        engine = "r"), list(label = "list_3", code = "cidade_estado_bd <- data.frame(\"Estado\" = as.character(\"SP\", \"SP\", \"SP\"),\n                               \"Cidade\" = as.character(\"Campinas\", \"Atibaia\", \"São Paulo\"))\n\ncidade_estado_bd <- list(cidade_estado_bd)\n\nlista_final <- c(cidade_estado_bd, nomes_lista)", 
+        engine = "r"), list(label = "list_3", code = "cidade_estado_bd <- data.frame(\"Estado\" = as.character(\"SP\", \"SP\", \"SP\"),\n                               \"Cidade\" = as.character(\"Campinas\", \"Atibaia\", \"São Paulo\"))\n\ncidade_estado_bd <- list(cidade_estado_bd)\n\nlista_final <- c(cidade_estado_bd, nomes_lista)\nsummary(lista_final)", 
         opts = list(label = "\"list_3\"", exercise = "TRUE", 
             exercise.setup = "\"list_1\""), engine = "r"), list(
         label = "list_6", code = "# Acessando e Extrando Nome dentro da Lista\nnome_pedro <- lista_final[[2]]\nnome_pedro", 
@@ -1055,8 +1069,8 @@ learnr:::store_exercise_cache(structure(list(label = "func-pacotes_1", global_se
 "library(tidygeocoder)", "library(openxlsx)", "library(dplyr)", 
 "library(ggplot2)", "library(sf)", "library(stringr)", "library(scraEP)", 
 "library(geobr)", "library(tmap)"), chunk_opts = list(label = "setup", 
-    include = FALSE)), setup = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)", 
-    chunks = list(list(label = "vector_1", code = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)", 
+    include = FALSE)), setup = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\nNumeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\nInteger\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\nCharacther\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)\nLogical", 
+    chunks = list(list(label = "vector_1", code = "Numeric <- c(1.2, 1.3, 1.5) # Assinando valores do vetor c() a varíavel Numeric\nNumeric\n\n# Vetor Integers\nInteger <- c(1, 2, 3)\nInteger\n\n# Vetor Characther\nCharacther <- c(\"Pedro\", \"Toledo\", \"Lucas\")\nCharacther\n\n# Vetor Logical\nLogical <- c(TRUE, FALSE, TRUE)\nLogical", 
         opts = list(label = "\"vector_1\"", exercise = "TRUE"), 
         engine = "r"), list(label = "func-pacotes_1", code = "# Descobrindo valor minimo\nmin(Numeric)\n\n# Argumentos\nmin(c(1, NA, 10))\n\nmin(c(1, NA, 10), na.rm = TRUE)", 
         opts = list(label = "\"func-pacotes_1\"", exercise = "TRUE", 
@@ -1189,7 +1203,7 @@ learnr:::store_exercise_cache(structure(list(label = "bd_2", global_setup = stru
     include = FALSE)), setup = "# Abrindo Banco de Dados\nenderecos <- read.xlsx(\"https://github.com/PedroTL/geocoding-mini-curso-r/raw/main/Bancos%20de%20Dados/Enderecos-Mini-Curso.xlsx\")\n\n# Visualizando primeiras observacoes\nhead(enderecos)", 
     chunks = list(list(label = "bd_1", code = "# Abrindo Banco de Dados\nenderecos <- read.xlsx(\"https://github.com/PedroTL/geocoding-mini-curso-r/raw/main/Bancos%20de%20Dados/Enderecos-Mini-Curso.xlsx\")\n\n# Visualizando primeiras observacoes\nhead(enderecos)", 
         opts = list(label = "\"bd_1\"", exercise = "TRUE"), engine = "r"), 
-        list(label = "bd_2", code = "# Selecionando 3 Observacao da 2 Coluna\nendereco_1 <- enderecos[3, 2]\n\n# Selecionando 3 até 10 Observacoes da 1 Coluna\nenderecos_2 <- enderecos[3:10, 1]\n\n# Selecionando apenas a coluna de endereco\nenderecos_3 <- enderecos$endereco", 
+        list(label = "bd_2", code = "# Selecionando 3 Observacao da 2 Coluna\nendereco_1 <- enderecos[3, 2]\nendereco_1\n\n# Selecionando 3 até 10 Observacoes da 1 Coluna\nenderecos_2 <- enderecos[3:10, 1]\nenderecos_2\n\n# Selecionando apenas a coluna de endereco\nenderecos_3 <- enderecos$endereco\nenderecos_3", 
             opts = list(label = "\"bd_2\"", exercise = "TRUE", 
                 exercise.setup = "\"bd_1\""), engine = "r")), 
     code_check = NULL, error_check = NULL, check = NULL, solution = NULL, 
@@ -1211,10 +1225,11 @@ learnr:::store_exercise_cache(structure(list(label = "bd_2", global_setup = stru
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, label = "bd_2", exercise = TRUE, exercise.setup = "bd_1", 
         code = c("# Selecionando 3 Observacao da 2 Coluna", "endereco_1 <- enderecos[3, 2]", 
-        "", "# Selecionando 3 até 10 Observacoes da 1 Coluna", 
-        "enderecos_2 <- enderecos[3:10, 1]", "", "# Selecionando apenas a coluna de endereco", 
-        "enderecos_3 <- enderecos$endereco"), out.width.px = 624, 
-        out.height.px = 384, params.src = "bd_2, exercise=TRUE, exercise.setup=\"bd_1\"", 
+        "endereco_1", "", "# Selecionando 3 até 10 Observacoes da 1 Coluna", 
+        "enderecos_2 <- enderecos[3:10, 1]", "enderecos_2", "", 
+        "# Selecionando apenas a coluna de endereco", "enderecos_3 <- enderecos$endereco", 
+        "enderecos_3"), out.width.px = 624, out.height.px = 384, 
+        params.src = "bd_2, exercise=TRUE, exercise.setup=\"bd_1\"", 
         fig.num = 0, exercise.df_print = "paged", exercise.checker = "NULL"), 
     engine = "r", version = "4"), class = c("r", "tutorial_exercise"
 )))
@@ -1420,7 +1435,7 @@ learnr:::store_exercise_cache(structure(list(label = "geo_4", global_setup = str
         list(label = "bd_5", code = "# Unindo e Limpando Endereco\nendereco_final <- enderecos[15:45, ] %>%\n  mutate(endereco_completo = paste(endereco, municipio, estado, cep, pais, sep = \" \")) %>% # Uni informacoes de diversas colunas em uma unica\n  mutate(endereco_completo = str_replace_all(endereco_completo, \"[[:punct:]]\", \"\"), # Remove Pontuacao\n         endereco_completo = unaccent(endereco_completo), # Remove acentos\n         endereco_completo = str_squish(endereco_completo), # Remove espacos duplos\n         endereco_completo = toupper(endereco_completo)) # Deixa todo texto em letra maiuscula\n\nhead(endereco_final$endereco_completo)", 
             opts = list(label = "\"bd_5\"", exercise = "TRUE", 
                 exercise.setup = "\"bd_1\""), engine = "r"), 
-        list(label = "geo_4", code = "response <- geocode_combine(endereco_final,\n                            queries = list(\n                              list(address = 'endereco_completo', method = 'arcgis', mode = 'single', full_results = TRUE),\n                              list(address = 'endereco_completo', method = 'osm', mode = 'single', full_results = TRUE)),\n                            cascade = FALSE,\n                            return_list = TRUE)\n\nsummary(response)\n\n# Extraindo Bancos de Dados\nendereco_final_arcgis <- response[[1]]\nendereco_final_osm <- response[[2]]", 
+        list(label = "geo_4", code = "endereco_final_combine <- endereco_final[0:3, ]\n\nresponse <- geocode_combine(endereco_final_combine,\n                            queries = list(\n                              list(address = 'endereco_completo', method = 'arcgis', mode = 'single', full_results = TRUE),\n                              list(address = 'endereco_completo', method = 'osm', mode = 'single', full_results = TRUE)),\n                            cascade = FALSE,\n                            return_list = TRUE)\n\nsummary(response)\n\n# Extraindo Bancos de Dados\nendereco_final_arcgis <- response[[1]]\nendereco_final_osm <- response[[2]]\n\nhead(endereco_final_arcgis)\nhead(endereco_final_osm)", 
             opts = list(label = "\"geo_4\"", exercise = "TRUE", 
                 exercise.setup = "\"bd_5\""), engine = "r")), 
     code_check = NULL, error_check = NULL, check = NULL, solution = NULL, 
@@ -1441,12 +1456,14 @@ learnr:::store_exercise_cache(structure(list(label = "geo_4", global_setup = str
         message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, label = "geo_4", exercise = TRUE, exercise.setup = "bd_5", 
-        code = c("response <- geocode_combine(endereco_final,", 
+        code = c("endereco_final_combine <- endereco_final[0:3, ]", 
+        "", "response <- geocode_combine(endereco_final_combine,", 
         "                            queries = list(", "                              list(address = 'endereco_completo', method = 'arcgis', mode = 'single', full_results = TRUE),", 
         "                              list(address = 'endereco_completo', method = 'osm', mode = 'single', full_results = TRUE)),", 
         "                            cascade = FALSE,", "                            return_list = TRUE)", 
         "", "summary(response)", "", "# Extraindo Bancos de Dados", 
-        "endereco_final_arcgis <- response[[1]]", "endereco_final_osm <- response[[2]]"
+        "endereco_final_arcgis <- response[[1]]", "endereco_final_osm <- response[[2]]", 
+        "", "head(endereco_final_arcgis)", "head(endereco_final_osm)"
         ), out.width.px = 624, out.height.px = 384, params.src = "geo_4, exercise=TRUE, exercise.setup=\"bd_5\"", 
         fig.num = 0, exercise.df_print = "paged", exercise.checker = "NULL"), 
     engine = "r", version = "4"), class = c("r", "tutorial_exercise"
