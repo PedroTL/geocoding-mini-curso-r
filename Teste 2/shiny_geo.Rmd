@@ -347,46 +347,86 @@ Primeira visualizacao
 ```{r map_3, exercise=TRUE, exercise.setup="map_0"}
 # Criando Mapa Base 
 mapa_base <- tm_shape(campinas_mapa) +
-  tm_fill("lightblue") +
-  tm_borders() +
-  tm_polygons("APG", legend.show = F, lwd = 0.02, alpha=0.2) +
-  tm_text("APG", size = 1/2, auto.placement = FALSE) #+
-  #tm_layout(frame = FALSE)
-
-# Visualizando Mapa Base
-mapa_base
+  tm_fill(col = "APG", title = expression("Regiões"), palette = NULL) +
+  tm_borders("black")
+# tm_polygons("APG", legend.show = F, lwd = 0.02, alpha=0.2) +
+# tm_text("APG", size = 1/2, auto.placement = FALSE)
 
 # Adicionando Pontos no Mapa Base
 mapa_base_pontos <- mapa_base +
   tm_shape(endereco_sf) +
   tm_dots(size = 0.1, col = "red") 
 
-# Visualizando Mapa Base com os Pontos
-mapa_base_pontos
-
 # Adicionando Elementos Finais
 mapa_base_pontos_elementos <- mapa_base_pontos +
-  tm_scale_bar(position = c(0.001, 0.0001), width = 0.13) +
-  tm_compass(position = c("left", "top"), size = 1) +
-  tm_layout(main.title = "Mapa de pontos - Georreferenciamento", main.title.size = 1.4) +
-  tm_grid(projection = "EPSG:4674", alpha = 0.2) +
-  tm_credits("Fonte: Fabricacao propria com base nos dados do Correio", fontface = "italic", align = "right", position = c(0.08, 0.0001)) 
+    tm_layout(main.title = "Mapa de Pontos - Georreferenciamento", 
+              main.title.size = 1,
+              main.title.position = "left",
+              attr.outside = FALSE,
+              inner.margins=c(0.07, 0, 0, 0),
+              frame = TRUE,
+              legend.outside = TRUE, 
+              legend.position = c(0.10, 0.04), # c("right", "BOTTOM")
+              legend.frame = TRUE,
+              legend.text.size = 0.68) +
+    tm_grid(projection = "EPSG:4674", alpha = 0.2, labels.inside.frame = FALSE, lines = TRUE, labels.format = list(format = "f", digits = 2)) +
+    tm_compass(position = c("left", "TOP"), size = 0.8) +
+    tm_scale_bar(position = c("left", "BOTTOM"), text.size = 0.5, breaks = c(0, 5, 10)) +
+    tm_credits("Datum SIRGAS 2000 Fuso 23 S\nSistema de Coordenadas Planas\nData de Elaboracão: 15/05/23", size = 0.593, position = c(0.75, 0.001), fontface = NA, align = "left")
 
-# Visualizando com os Elementos Finais
-mapa_base_pontos_elementos
-
-# Abrindo Mapa dos Municipios de São Paulo
-sao_paulo <- read_municipality(code_muni= "SP", year=2020) %>%
+# Abrindo Mapa dos Municipios de São Paulo Inset
+inset <- read_municipality(code_muni= "SP", year=2020) %>%
   select(code_muni, geometry = geom) %>%
-  mutate(campinas = ifelse(code_muni == 3509502, 1, NA))
+  mutate(campinas = ifelse(code_muni == 3509502, 1, NA)) |>
+  st_transform(crs = st_crs(endereco_sf))
 
 # criando Filtro para Campians
-sao_paulo_mini <- tm_shape(sao_paulo) +
-  tm_fill("campinas", legend.show = F, palette = "red")
+insetmap <-
+  tm_shape(inset) + 
+  tm_fill("campinas", legend.show = F, palette = "red", colorNA = "lightgrey") +
+  tm_borders(lwd = 1, col="grey") +
+  tm_shape(sg) + 
+  tm_borders(lw=2, col="red") +
+  tm_layout(inner.margins = c(0.04,0.04,0.04,0.04), 
+            outer.margins=c(0,0,0,0))
+```
 
+```{r map_4, exercise=TRUE, exercise.setup="map_3"}
+mapa_base
+```
 
+```{r map_4, exercise=TRUE, exercise.setup="map_3"}
+mapa_base_pontos
+```
+
+```{r map_4, exercise=TRUE, exercise.setup="map_3"}
+mapa_base_pontos_elementos
+```
+
+```{r map_4, exercise=TRUE, exercise.setup="map_3"}
+plot(inset)
+```
+
+```{r map_4, exercise=TRUE, exercise.setup="map_3"}
+insetmap
+```
+
+```{r map_4, exercise=TRUE, exercise.setup="map_3"}
 # Adicionando Mapa de São Paulo na visualizacao do Mapa
-print(sao_paulo_mini, vp = grid::viewport(0.8, 0.25, width = 0.2, height = 0.45))
+mapa_base_pontos_elementos
+print(insetmap, vp = grid::viewport(0.68, 0.718, width = 0.109, height = 0.40))
+```
+
+```{r map_4, exercise=TRUE, exercise.setup="map_3"}
+# Outro modo de Salvar
+vp <- grid::viewport(0.78, 0.65, width = 0.17, height = 0.40)
+
+tmap_save(mainmap, filename = "dist2nat2000.png",
+          dpi=100, 
+          insets_tm = insetmap, 
+          insets_vp = vp,
+          height = 600,
+          width = 900)
 ```
 
 ### 6.2 Visualizando mapa de calor famílias do CadUnico feito no Arcgis
